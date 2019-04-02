@@ -1,0 +1,29 @@
+{
+  "name": "fluentsocket",
+  "version": "1.0.0",
+  "description": "Package to create socket events dynamically and at high level.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./tests/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/filipemacedo/fluent-socket.git"
+  },
+  "keywords": [
+    "socket fluent",
+    "socket routes",
+    "socket high level"
+  ],
+  "author": "Filipe Macedo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/filipemacedo/fluent-socket/issues"
+  },
+  "homepage": "https://github.com/filipemacedo/fluent-socket#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "chai": "^4.2.0",
+    "socket.io": "^2.2.0"
+  }
+}
