@@ -7,63 +7,73 @@
 
 ## How to install
 
-    npm i fluidsocket --s s
+```
+npm i fluidsocket --s s
+```
 
 ## How we solve the problem
 
 No longer use your traditional code
 
-	const io = require('socket.io').listen(3000)
+```javascript
+const io = require('socket.io').listen(3000)
+
+io
+  .of('/admin')
+  .on('connection', (client) => {
+    client.on('user.create', data => {
+      //code...
+    })
+
+    client.on('user.update', data => {
+      //code...
+    })
+  })
+```
 	
-	io
-	  .of('/admin')
-	  .on('connection', (client) => {
-		  client.on('user.create', data => {
-			  //code...
-		  })
-		  
-		  client.on('user.update', data => {
-			  //code...
-		  })
-	  })
 	  
 Now you can use our way
 
-    const fluidSocket = require('fluidsocket')(io)
-   
-    const options = {  
-	    "admin":{  
-		    "listeners":{  
-			    "user":{  
-				    "create": {  
-					    "action": userService.create() 
-				    },
-					
-					"update": {
-						"action": userService.update()
-					}  
-			    }  
-		    }  
-	    }  
+```javascript
+const fluidSocket = require('fluidsocket')(io)
+
+const options = {
+  "admin": {
+    "listeners": {
+      "user": {
+        "create": {
+          "action": userService.create()
+        },
+
+        "update": {
+          "action": userService.update()
+        }
+      }
     }
-    
-    fluidSocket(options)
+  }
+}
+
+fluidSocket(options)
+```
 
 ## Namespace guards
 *We constantly need to put a guard before releasing a new connection or even assign data in connection with the client.*
 
 When it is your case, simply add the guard in the **guards attribute**.
 
-    {
-	    "admin": {
-		    "listeners": {
-			    //...
-			},
-			"guards": [
-				isAdmin()
-			] 
-	    }
-	}
+```javascript
+{
+  "admin": {
+    "listeners": {
+      //...
+    },
+    "guards": [
+      isAdmin()
+    ]
+  }
+}
+```
+
 
 The namespace guard function is given two parameters ***client and next***
 
@@ -73,13 +83,15 @@ The namespace guard function is given two parameters ***client and next***
 
 ***Namespace Guard Example***
 
-    const isAdmin = () => {
-	    return (client, next) => {
-		    client.isAdmin = true
-			
-			return next()
-		}
-	}
+```javascript
+const isAdmin = () => {
+  return (client, next) => {
+    client.isAdmin = true
+
+    return next()
+  }
+}
+```
 
 ## Events
 *You will always use one or more events while working with socket, our idea is just to facilitate this.*
@@ -90,38 +102,42 @@ The events also have guards and the purpose is to check if the data issued confo
 
 When it is your case, simply add the guard in the **guards attribute**.
 
-    {
-	    "admin": {
-		    "user": {
-			    "create": {
-				    "action": userService.create(),
-				    "guards": [
-					    ifUsernameNotExists()
-				    ]
-			    },
-		    }
-	    }
-	}
-
+```javascript
+{
+  "admin": {
+    "user": {
+      "create": {
+        "action": userService.create(),
+        "guards": [
+          ifUsernameNotExists()
+        ]
+      },
+    }
+  }
+}
+```
 
 ***Example***
 
 > The guard may even remember the middleware, but it has the power to issue errors in real time.
 > > To learn more about emitting errors, click here.
 
+```javascript
+const ifUsernameNotExists = () => client => async (data, next) => {
+  const {
+    username
+  } = data
 
-    const ifUsernameNotExists = () => client => async (data, next) => {
-		const { username } = data
-		
-		const hasUsername = await userCollection.hasUsername(username)
-		
-		return (! hasUsername)
-					? next()
-					: client
-						.emit('customError', {
-							"message": "username already registered."
-						})
-	}
+  const hasUsername = await userCollection.hasUsername(username)
+
+  return (!hasUsername) ?
+    next() :
+    client
+    .emit('customError', {
+      "message": "username already registered."
+    })
+}
+```
 
 ## ***Event action***
 The action is where you will carry out the business rule, remembering that it is mandatory to return a value, only so we will be able to issue after the execution.
@@ -129,11 +145,13 @@ The action is where you will carry out the business rule, remembering that it is
 **Example**
 The data issued by the client can be retrieved in the body attribute.
 
-    async create({ body }) {
-		const userCreated = await userCollection.create(body)
+```javascript
+async create({ body }) {
+  const userCreated = await userCollection.create(body)
 
-		return userCreated
-	}
+  return userCreated
+}
+```
 
 It is also possible to signal that you want to issue error, even through actions.
 
@@ -144,21 +162,24 @@ Several times we will need to validate at runtime whether it is necessary to iss
 
 **Example**
 
-     async buy({ body, userDocument }) {
-		    
-    		const hasCredits = userDocument.hasCredits(200)
-			
-			// is false
-			if (! hasCredits) throw creditsException()
-    		
-    		//...
-     }
+```javascript
+async buy({ body, userDocument }) {
+  const hasCredits = userDocument.hasCredits(200)
+
+  // is false
+  if (!hasCredits) throw creditsException()
+
+  //...
+}
+```
     	
 A ***customError*** event will be issued automatically.
 To receive this event on your customer just listen to the event.
 
-    ...
-     .on('customError', (error) => console.log(error))
+```javascript
+...
+  .on('customError', (error) => console.log(error))
+```
 
 ## After the events
 After completing an action it is interesting to issue the result to the customers.
@@ -194,39 +215,43 @@ Events are separated into 3 categories
 All categories are given two parameters, the issuer and the result of the action.
 
 **Primary**
+```javascript
+const { eventPrimary } = require('fluidsocket')
 
-    const { eventPrimary } = require('fluidsocket')
-	
-	module.exports = {
-		created() {
-			return eventPrimary((client, result) => {
-				return client.emit('success', result)
-			}) 
-		}
-	}
+module.exports = {
+  created() {
+    return eventPrimary((client, result) => {
+      return client.emit('success', result)
+    })
+  }
+}
+```
 
 **My Namespace**
+```javascript
+const { eventMyNamespace } = require('fluidsocket')
 
-    const { eventMyNamespace } = require('fluidsocket')
-    	
-    	module.exports = {
-    		created() {
-    			return eventMyNamespace((io, result) => {
-    				return io.emit('success', result)
-    			}) 
-    		}
-    	}
+module.exports = {
+  created() {
+    return eventMyNamespace((io, result) => {
+      return io.emit('success', result)
+    })
+  }
+}
+```
+    
 
 **Secondary**
+```javascript
+const { eventSecondary } = require('fluidsocket')
 
-    const { eventSecondary } = require('fluidsocket')
-    	
-    module.exports = {
-    	created() {
-    		return eventSecondary((io, result) => {
-    			return io
-		    			.of('/player')
-		    			.emit('success', result)
-    		}) 
-    	}
-    }
+module.exports = {
+  created() {
+    return eventSecondary((io, result) => {
+      return io
+        .of('/player')
+        .emit('success', result)
+    })
+  }
+}
+```
