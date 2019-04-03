@@ -8,8 +8,18 @@
 ## How to install
 
 ```
-npm i fluidsocket --s s
+npm i fluidsocket --s
 ```
+
+## Sumary
+
+ 1. [How we solve the problem](#how-we-solve-the-problem)
+ 2. [Namespace guards](#namespace-guards)
+ 3. [Events Guards](#events-guards)
+ 4. [Event Action](#event-action)
+ 5. [Actions making mistakes](#actions-making-mistakes)
+ 6. [After the events](#after-the-events)
+
 
 ## How we solve the problem
 
