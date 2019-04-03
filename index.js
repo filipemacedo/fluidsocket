@@ -4,4 +4,4 @@ module.exports.initializeSocket = initializeSocket
 
 module.exports.eventSecondary = (cb) => ({ ioGlobal }) => result => cb(ioGlobal, result)
 module.exports.eventMyNamespace = (cb) => ({ ioOfNsp }) => result => cb(ioOfNsp, result)
-module.exports.eventClientIO = (cb) => ({ client }) => result => cb(client, result)
+module.exports.eventPrimary = (cb) => ({ client }) => result => cb(client, result)
