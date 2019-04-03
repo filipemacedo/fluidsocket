@@ -7,7 +7,7 @@
 
 ## How to install
 
-    npm i fluidsocket --s
+    npm i fluidsocket --s s
 
 ## How we solve the problem
 
