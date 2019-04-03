@@ -1,5 +1,5 @@
 {
-  "name": "fluentsocket",
+  "name": "fluidsocket",
   "version": "1.0.0",
   "description": "Package to create socket events dynamically and at high level.",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/filipemacedo/fluent-socket.git"
+    "url": "git+https://github.com/filipemacedo/fluidsocket.git"
   },
   "keywords": [
     "socket fluent",
@@ -18,9 +18,9 @@
   "author": "Filipe Macedo",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/filipemacedo/fluent-socket/issues"
+    "url": "https://github.com/filipemacedo/fluidsocket/issues"
   },
-  "homepage": "https://github.com/filipemacedo/fluent-socket#readme",
+  "homepage": "https://github.com/filipemacedo/fluidsocket#readme",
   "devDependencies": {},
   "dependencies": {
     "chai": "^4.2.0",
