@@ -166,7 +166,7 @@ After completing an action it is interesting to issue the result to the customer
 > It is necessary to always return a value of the executed action.
 
 To use it is quite simple, just add the events that will be issued on the property after
-```javascript
+```JSON
     {
 	    "admin": {
 		    "user": {
