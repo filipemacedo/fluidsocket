@@ -167,21 +167,21 @@ After completing an action it is interesting to issue the result to the customer
 
 To use it is quite simple, just add the events that will be issued on the property after
 ```JSON
-    {
-	    "admin": {
-		    "user": {
-			    "create": {
-				    "action": userService.create(),
-				    "after": [
-						userNamespaceAdmin.created()
-					],
-				    "guards": [
-					    ifUsernameNotExists()
-				    ]
-			    },
-		    }
-	    }
-	}
+ {
+  "admin": {
+    "user": {
+      "create": {
+        "action": "userService.create()",
+        "after": [
+          "userNamespaceAdmin.created()"
+        ],
+        "guards": [
+          "ifUsernameNotExists()"
+        ]
+      }
+    }
+  }
+}
 ```
 
 **Building an event**
