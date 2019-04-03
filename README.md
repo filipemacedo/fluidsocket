@@ -13,7 +13,7 @@
 
 No longer use your traditional code
 
-    ```const io = require('socket.io').listen(3000)
+	const io = require('socket.io').listen(3000)
 	
 	io
 	  .of('/admin')
@@ -25,7 +25,7 @@ No longer use your traditional code
 		  client.on('user.update', data => {
 			  //code...
 		  })
-	  })```
+	  })
 	  
 Now you can use our way
 
@@ -152,13 +152,13 @@ Several times we will need to validate at runtime whether it is necessary to iss
 			if (! hasCredits) throw creditsException()
     		
     		//...
-    	}
+     }
     	
 A ***customError*** event will be issued automatically.
 To receive this event on your customer just listen to the event.
 
     ...
-     on('customError', (error) => console.log(error))
+     .on('customError', (error) => console.log(error))
 
 ## After the events
 After completing an action it is interesting to issue the result to the customers.
