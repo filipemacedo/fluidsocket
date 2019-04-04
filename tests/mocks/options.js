@@ -3,15 +3,13 @@ const namespaces = {
 		listeners: {
 			user: {
 				create: {
-					action: ({ body }) => {
-						console.log(body)
-					},
-					guards: []
-					after: []
+					action: userService.create()
+					guards: [ ifUsernameNotExists() ]
+					after: [ userNamespaceAdmin.userCreated() ]
 				}
 			}	
 		},
-		guards: []
+		guards: [ userIsAdmin() ]
 	}
 }
 

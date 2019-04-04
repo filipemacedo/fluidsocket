@@ -134,18 +134,16 @@ When it is your case, simply add the guard in the **guards attribute**.
 
 ```javascript
 const ifUsernameNotExists = () => client => async (data, next) => {
-  const {
-    username
-  } = data
+  const { username } = data
 
   const hasUsername = await userCollection.hasUsername(username)
 
-  return (!hasUsername) ?
-    next() :
-    client
-    .emit('customError', {
-      "message": "username already registered."
-    })
+  return (!hasUsername) 
+  			? next() 
+    		: client
+			    .emit('customError', {
+			      "message": "username already registered."
+			    })
 }
 ```
 
