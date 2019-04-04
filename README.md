@@ -139,11 +139,11 @@ const ifUsernameNotExists = () => client => async (data, next) => {
   const hasUsername = await userCollection.hasUsername(username)
 
   return (!hasUsername) 
-  			? next() 
-    		: client
-			    .emit('customError', {
-			      "message": "username already registered."
-			    })
+            ? next() 
+            : client
+                .emit('customError', {
+                  "message": "username already registered."
+                })
 }
 ```
 
