@@ -45,7 +45,8 @@ io
 Now you can use our way
 
 ```javascript
-const fluidSocket = require('fluidsocket')(io)
+const { initializeSocket } = require('fluidsocket')
+const fluidSocket = initializeSocket(io)
 
 const options = {
   "admin": {
