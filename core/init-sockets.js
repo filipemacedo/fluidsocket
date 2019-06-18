@@ -1,4 +1,4 @@
-const socketCore = require('./listen-events')
+const socketCore = require("./listen-events");
 
 /**
  * [description]
@@ -7,28 +7,29 @@ const socketCore = require('./listen-events')
  * @return {[type]}         [description]
  */
 const globalNamespace = (io, ioOfNsp = undefined) => configs => {
-	const { guards, listeners } = configs
+  const { guards, listeners } = configs;
 
-	let definedIO = ioOfNsp ? ioOfNsp : io
+  let definedIO = ioOfNsp ? ioOfNsp : io;
 
-	/**
-	 * [description]
-	 * @param  {[type]} Array.isArray(guards)) definedIO     [description]
-	 * @return {[type]}                        [description]
-	 */
-	if (Array.isArray(guards)) definedIO = guards.reduce((p, c) => p.use(c), definedIO)
+  /**
+   * [description]
+   * @param  {[type]} Array.isArray(guards)) definedIO     [description]
+   * @return {[type]}                        [description]
+   */
+  if (Array.isArray(guards))
+    definedIO = guards.reduce((p, c) => p.use(c), definedIO);
 
-	/**
-	 * 
-	 */
-	return definedIO
-			.on('connection', client => socketCore({
-				client,
-				ioGlobal: io,
-				ioOfNsp: definedIO 
-			})(listeners || {}))
-}
-
+  /**
+   *
+   */
+  return definedIO.on("connection", client =>
+    socketCore({
+      client,
+      ioGlobal: io,
+      ioOfNsp: definedIO
+    })(listeners || {})
+  );
+};
 
 /**
  * [description]
@@ -36,31 +37,29 @@ const globalNamespace = (io, ioOfNsp = undefined) => configs => {
  * @return {[type]}    [description]
  */
 const customNamespace = io => (nsp, configs) => {
-	const ioOfNsp = io.of(`/${nsp}`)
+  const ioOfNsp = io.of(`/${nsp}`);
 
-	return globalNamespace(io, ioOfNsp)(configs)
-}
+  return globalNamespace(io, ioOfNsp)(configs);
+};
 
-module.exports = (io) => configs => {
-	/**
-	 * [globalNamespaceWithIO description]
-	 * @type {[type]}
-	 */
-	const globalNamespaceWithIO = globalNamespace(io)
+module.exports = io => configs => {
+  /**
+   * [globalNamespaceWithIO description]
+   * @type {[type]}
+   */
+  const globalNamespaceWithIO = globalNamespace(io);
 
-	/**
-	 * [customNamespaceWithIO description]
-	 * @type {[type]}
-	 */
-	const customNamespaceWithIO = customNamespace(io)
+  /**
+   * [customNamespaceWithIO description]
+   * @type {[type]}
+   */
+  const customNamespaceWithIO = customNamespace(io);
 
-	return Object
-			.keys(configs)
-			.map(nsp => {
-				if (nsp == 'global') {
-					return globalNamespaceWithIO(configs[nsp])
-				}
+  return Object.keys(configs).map(nsp => {
+    if (nsp == "global") {
+      return globalNamespaceWithIO(configs[nsp]);
+    }
 
-				return customNamespaceWithIO(nsp, configs[nsp])
-			})
-}
+    return customNamespaceWithIO(nsp, configs[nsp]);
+  });
+};
