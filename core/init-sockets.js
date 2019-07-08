@@ -24,7 +24,7 @@ const globalNamespace = (io, ioOfNsp = undefined) => configs => {
    */
   return definedIO.on("connection", async client => {
     connection && await connection(client);
-    disconnect && client.on("disconnect", client);
+    disconnect && client.on("disconnect", (data) => disconnect(client, data));
 
     socketCore({
       client,
