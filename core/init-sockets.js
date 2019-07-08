@@ -7,10 +7,10 @@ const socketCore = require("./listen-events");
  * @return {[type]}         [description]
  */
 const globalNamespace = (io, ioOfNsp = undefined) => configs => {
-  const { guards, listeners } = configs;
+  const { guards, listeners, connection, disconnect } = configs;
 
   let definedIO = ioOfNsp ? ioOfNsp : io;
-
+  
   /**
    * [description]
    * @param  {[type]} Array.isArray(guards)) definedIO     [description]
@@ -22,13 +22,18 @@ const globalNamespace = (io, ioOfNsp = undefined) => configs => {
   /**
    *
    */
-  return definedIO.on("connection", client =>
+  return definedIO.on("connection", async client => {
+    connection && await connection(client);
+    disconnect && client.on("disconnect", disconnect);
+
     socketCore({
       client,
       ioGlobal: io,
       ioOfNsp: definedIO
-    })(listeners || {})
-  );
+    })(listeners || {});
+
+
+  });
 };
 
 /**

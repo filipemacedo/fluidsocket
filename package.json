@@ -21,9 +21,10 @@
     "url": "https://github.com/filipemacedo/fluidsocket/issues"
   },
   "homepage": "https://github.com/filipemacedo/fluidsocket#readme",
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^4.2.0"
+  },
   "dependencies": {
-    "chai": "^4.2.0",
     "socket.io": "^2.2.0"
   }
 }

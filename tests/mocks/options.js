@@ -1,15 +1,21 @@
 const namespaces = {
 	admin: {
+		connect: (socket) => {
+			console.log(socket.id)
+		},
+		disconnect: (socket) => {
+			console.log(socket)
+		},
 		listeners: {
 			user: {
 				create: {
-					action: userService.create()
-					guards: [ ifUsernameNotExists() ]
-					after: [ userNamespaceAdmin.userCreated() ]
+					action: () => {},
+					guards: [ ],
+					after: [ ]
 				}
 			}	
 		},
-		guards: [ userIsAdmin() ]
+		guards: [ ]
 	}
 }
 
