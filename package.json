@@ -1,6 +1,6 @@
 {
   "name": "fluidsocket",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Package to create socket events dynamically and at high level.",
   "main": "index.js",
   "scripts": {
