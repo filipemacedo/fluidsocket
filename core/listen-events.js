@@ -3,7 +3,7 @@ const useGuards = event => (socketClient, guard) =>
     /**
      *
      */
-    const [body, eventEmitted] = data;
+    const [eventEmitted, body] = data;
     /**
      * [guardWithClient description]
      * @type {[type]}
