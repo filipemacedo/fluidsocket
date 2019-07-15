@@ -12,7 +12,10 @@ const useGuards = event => (socketClient, guard) =>
 
     return event !== eventEmitted
       ? next()
-      : await guardWithClient(JSON.parse(body), next);
+      : await guardWithClient(
+          typeof body === "string" ? JSON.parse(body) : body,
+          next
+        );
   });
 /**
  * [description]
