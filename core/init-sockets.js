@@ -10,7 +10,7 @@ const globalNamespace = (io, ioOfNsp = undefined) => configs => {
   const { guards, listeners, connection, disconnect } = configs;
 
   let definedIO = ioOfNsp ? ioOfNsp : io;
-  
+
   /**
    * [description]
    * @param  {[type]} Array.isArray(guards)) definedIO     [description]
@@ -23,16 +23,15 @@ const globalNamespace = (io, ioOfNsp = undefined) => configs => {
    *
    */
   return definedIO.on("connection", async client => {
-    connection && await connection(client);
-    disconnect && client.on("disconnect", (data) => disconnect(client, data));
+    connection && (await connection(client));
+    disconnect &&
+      client.on("disconnect", data => disconnect({ client, io }, data));
 
     socketCore({
       client,
       ioGlobal: io,
       ioOfNsp: definedIO
     })(listeners || {});
-
-
   });
 };
 
